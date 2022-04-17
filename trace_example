@@ -1,0 +1,191 @@
+[trace]  ?- s([a,man,shoots]).
+   Call: (10) s([a, man, shoots]) ?
+   Call: (11) np(_8748) ?
+   Call: (12) det(_9500) ?
+   Exit: (12) det([a]) ?
+   Call: (12) n(_11008) ?
+   Exit: (12) n([woman]) ?
+   Call: (12) append([a], [woman], _8748) ?
+   Call: (13) append([], [woman], _13278) ?
+   Exit: (13) append([], [woman], [woman]) ?
+   Exit: (12) append([a], [woman], [a, woman]) ?
+   Exit: (11) np([a, woman]) ?
+   Call: (11) vp(_16304) ?
+   Call: (12) v(_17056) ?
+   Exit: (12) v([shoots]) ?
+   Call: (12) np(_18564) ?
+   Call: (13) det(_19316) ?
+   Exit: (13) det([a]) ?
+   Call: (13) n(_20824) ?
+   Exit: (13) n([woman]) ?
+   Call: (13) append([a], [woman], _18564) ?
+   Call: (14) append([], [woman], _23094) ?
+   Exit: (14) append([], [woman], [woman]) ?
+   Exit: (13) append([a], [woman], [a, woman]) ?
+   Exit: (12) np([a, woman]) ?
+   Call: (12) append([shoots], [a, woman], _16304) ?
+   Call: (13) append([], [a, woman], _26882) ?
+   Exit: (13) append([], [a, woman], [a, woman]) ?
+   Exit: (12) append([shoots], [a, woman], [shoots, a, woman]) ?
+   Exit: (11) vp([shoots, a, woman]) ?
+   Call: (11) append([a, woman], [shoots, a, woman], [a, man, shoots]) ?
+   Call: (12) append([woman], [shoots, a, woman], [man, shoots]) ?
+   Fail: (12) append([woman], [shoots, a, woman], [man, shoots]) ?
+   Fail: (11) append([a, woman], [shoots, a, woman], [a, man, shoots]) ?
+   Redo: (13) n(_118) ?
+   Exit: (13) n([man]) ?
+   Call: (13) append([a], [man], _108) ?
+   Call: (14) append([], [man], _2896) ?
+   Exit: (14) append([], [man], [man]) ?
+   Exit: (13) append([a], [man], [a, man]) ?
+   Exit: (12) np([a, man]) ?
+   Call: (12) append([shoots], [a, man], _98) ?
+   Call: (13) append([], [a, man], _6684) ?
+   Exit: (13) append([], [a, man], [a, man]) ?
+   Exit: (12) append([shoots], [a, man], [shoots, a, man]) ?
+   Exit: (11) vp([shoots, a, man]) ?
+   Call: (11) append([a, woman], [shoots, a, man], [a, man, shoots]) ?
+   Call: (12) append([woman], [shoots, a, man], [man, shoots]) ?
+   Fail: (12) append([woman], [shoots, a, man], [man, shoots]) ?
+   Fail: (11) append([a, woman], [shoots, a, man], [a, man, shoots]) ?
+   Redo: (13) det(_110) ?
+   Exit: (13) det([the]) ?
+   Call: (13) n(_14248) ?
+   Exit: (13) n([woman]) ?
+   Call: (13) append([the], [woman], _108) ?
+   Call: (14) append([], [woman], _16518) ?
+   Exit: (14) append([], [woman], [woman]) ?
+   Exit: (13) append([the], [woman], [the, woman]) ?
+   Exit: (12) np([the, woman]) ?
+   Call: (12) append([shoots], [the, woman], _98) ?
+   Call: (13) append([], [the, woman], _20306) ?
+   Exit: (13) append([], [the, woman], [the, woman]) ?
+   Exit: (12) append([shoots], [the, woman], [shoots, the, woman]) ?
+   Exit: (11) vp([shoots, the, woman]) ?
+   Call: (11) append([a, woman], [shoots, the, woman], [a, man, shoots]) ?
+   Call: (12) append([woman], [shoots, the, woman], [man, shoots]) ?
+   Fail: (12) append([woman], [shoots, the, woman], [man, shoots]) ?
+   Fail: (11) append([a, woman], [shoots, the, woman], [a, man, shoots]) ?
+   Redo: (13) n(_14248) ?
+   Exit: (13) n([man]) ?
+   Call: (13) append([the], [man], _108) ?
+   Call: (14) append([], [man], _28632) ?
+   Exit: (14) append([], [man], [man]) ?
+   Exit: (13) append([the], [man], [the, man]) ?
+   Exit: (12) np([the, man]) ?
+   Call: (12) append([shoots], [the, man], _98) ?
+   Call: (13) append([], [the, man], _128) ?
+   Exit: (13) append([], [the, man], [the, man]) ?
+   Exit: (12) append([shoots], [the, man], [shoots, the, man]) ?
+   Exit: (11) vp([shoots, the, man]) ?
+   Call: (11) append([a, woman], [shoots, the, man], [a, man, shoots]) ?
+   Call: (12) append([woman], [shoots, the, man], [man, shoots]) ?
+   Fail: (12) append([woman], [shoots, the, man], [man, shoots]) ?
+   Fail: (11) append([a, woman], [shoots, the, man], [a, man, shoots]) ?
+   Redo: (11) vp(_98) ?
+   Call: (12) v(_98) ?
+   Exit: (12) v([shoots]) ?
+   Exit: (11) vp([shoots]) ?
+   Call: (11) append([a, woman], [shoots], [a, man, shoots]) ?
+   Call: (12) append([woman], [shoots], [man, shoots]) ?
+   Fail: (12) append([woman], [shoots], [man, shoots]) ?
+   Fail: (11) append([a, woman], [shoots], [a, man, shoots]) ?
+   Redo: (12) n(_84) ?
+   Exit: (12) n([man]) ?
+   Call: (12) append([a], [man], _74) ?
+   Call: (13) append([], [man], _14404) ?
+   Exit: (13) append([], [man], [man]) ?
+   Exit: (12) append([a], [man], [a, man]) ?
+   Exit: (11) np([a, man]) ?
+   Call: (11) vp(_17430) ?
+   Call: (12) v(_18182) ?
+   Exit: (12) v([shoots]) ?
+   Call: (12) np(_19690) ?
+   Call: (13) det(_20442) ?
+   Exit: (13) det([a]) ?
+   Call: (13) n(_21950) ?
+   Exit: (13) n([woman]) ?
+   Call: (13) append([a], [woman], _19690) ?
+   Call: (14) append([], [woman], _24220) ?
+   Exit: (14) append([], [woman], [woman]) ?
+   Exit: (13) append([a], [woman], [a, woman]) ?
+   Exit: (12) np([a, woman]) ?
+   Call: (12) append([shoots], [a, woman], _17430) ?
+   Call: (13) append([], [a, woman], _28008) ?
+   Exit: (13) append([], [a, woman], [a, woman]) ?
+   Exit: (12) append([shoots], [a, woman], [shoots, a, woman]) ?
+   Exit: (11) vp([shoots, a, woman]) ?
+   Call: (11) append([a, man], [shoots, a, woman], [a, man, shoots]) ?
+   Call: (12) append([man], [shoots, a, woman], [man, shoots]) ?
+   Call: (13) append([], [shoots, a, woman], [shoots]) ?
+   Fail: (13) append([], [shoots, a, woman], [shoots]) ?
+   Fail: (12) append([man], [shoots, a, woman], [man, shoots]) ?
+   Fail: (11) append([a, man], [shoots, a, woman], [a, man, shoots]) ?
+   Redo: (13) n(_110) ?
+   Exit: (13) n([man]) ?
+   Call: (13) append([a], [man], _100) ?
+   Call: (14) append([], [man], _5412) ?
+   Exit: (14) append([], [man], [man]) ?
+   Exit: (13) append([a], [man], [a, man]) ?
+   Exit: (12) np([a, man]) ?
+   Call: (12) append([shoots], [a, man], _90) ?
+   Call: (13) append([], [a, man], _9200) ?
+   Exit: (13) append([], [a, man], [a, man]) ?
+   Exit: (12) append([shoots], [a, man], [shoots, a, man]) ?
+   Exit: (11) vp([shoots, a, man]) ?
+   Call: (11) append([a, man], [shoots, a, man], [a, man, shoots]) ?
+   Call: (12) append([man], [shoots, a, man], [man, shoots]) ?
+   Call: (13) append([], [shoots, a, man], [shoots]) ?
+   Fail: (13) append([], [shoots, a, man], [shoots]) ?
+   Fail: (12) append([man], [shoots, a, man], [man, shoots]) ?
+   Fail: (11) append([a, man], [shoots, a, man], [a, man, shoots]) ?
+   Redo: (13) det(_102) ?
+   Exit: (13) det([the]) ?
+   Call: (13) n(_18280) ?
+   Exit: (13) n([woman]) ?
+   Call: (13) append([the], [woman], _100) ?
+   Call: (14) append([], [woman], _20550) ?
+   Exit: (14) append([], [woman], [woman]) ?
+   Exit: (13) append([the], [woman], [the, woman]) ?
+   Exit: (12) np([the, woman]) ?
+   Call: (12) append([shoots], [the, woman], _90) ?
+   Call: (13) append([], [the, woman], _24338) ?
+   Exit: (13) append([], [the, woman], [the, woman]) ?
+   Exit: (12) append([shoots], [the, woman], [shoots, the, woman]) ?
+   Exit: (11) vp([shoots, the, woman]) ?
+   Call: (11) append([a, man], [shoots, the, woman], [a, man, shoots]) ?
+   Call: (12) append([man], [shoots, the, woman], [man, shoots]) ?
+   Call: (13) append([], [shoots, the, woman], [shoots]) ?
+   Fail: (13) append([], [shoots, the, woman], [shoots]) ?
+   Fail: (12) append([man], [shoots, the, woman], [man, shoots]) ?
+   Fail: (11) append([a, man], [shoots, the, woman], [a, man, shoots]) ?
+   Redo: (13) n(_18280) ?
+   Exit: (13) n([man]) ?
+   Call: (13) append([the], [man], _100) ?
+   Call: (14) append([], [man], _1632) ?
+   Exit: (14) append([], [man], [man]) ?
+   Exit: (13) append([the], [man], [the, man]) ?
+   Exit: (12) np([the, man]) ?
+   Call: (12) append([shoots], [the, man], _90) ?
+   Call: (13) append([], [the, man], _5420) ?
+   Exit: (13) append([], [the, man], [the, man]) ?
+   Exit: (12) append([shoots], [the, man], [shoots, the, man]) ?
+   Exit: (11) vp([shoots, the, man]) ?
+   Call: (11) append([a, man], [shoots, the, man], [a, man, shoots]) ?
+   Call: (12) append([man], [shoots, the, man], [man, shoots]) ?
+   Call: (13) append([], [shoots, the, man], [shoots]) ?
+   Fail: (13) append([], [shoots, the, man], [shoots]) ?
+   Fail: (12) append([man], [shoots, the, man], [man, shoots]) ?
+   Fail: (11) append([a, man], [shoots, the, man], [a, man, shoots]) ?
+   Redo: (11) vp(_90) ?
+   Call: (12) v(_90) ?
+   Exit: (12) v([shoots]) ?
+   Exit: (11) vp([shoots]) ?
+   Call: (11) append([a, man], [shoots], [a, man, shoots]) ?
+   Call: (12) append([man], [shoots], [man, shoots]) ?
+   Call: (13) append([], [shoots], [shoots]) ?
+   Exit: (13) append([], [shoots], [shoots]) ?
+   Exit: (12) append([man], [shoots], [man, shoots]) ?
+   Exit: (11) append([a, man], [shoots], [a, man, shoots]) ?
+   Exit: (10) s([a, man, shoots]) ?
+true

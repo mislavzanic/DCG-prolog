@@ -1,0 +1,174 @@
+#+title: Definite Clause Gramatike
+#+author: Mislav Zanic
+
+* Beskontekstne Gramatike
+
+#+begin_src
+s    ->  np   vp
+np   ->  det  n
+vp   ->  v    np
+vp   ->  v
+det  ->  a
+det  ->  the
+n    ->  woman
+n    ->  man
+v    ->  shoots
+#+end_src
+
+** Prepoznavanje BKG koristeci append
+*** Append
+#+begin_src prolog :tangle ./cfg_append.pl
+append([],X,X).
+append([H|T1],Y,[H|T2]) :- append(T1,Y,T2).
+#+end_src
+
+*** Gramatika
+#+begin_src prolog :tangle ./cfg_append.pl :session :goal s([a,man,shoots])
+s(Z) :- np(X),vp(Y),append(X,Y,Z).
+np(Z) :- det(X),n(Y),append(X,Y,Z).
+vp(Z) :- v(X),np(Y),append(X,Y,Z).
+vp(Z) :- v(Z).
+
+det([a]).
+det([the]).
+n([woman]).
+n([man]).
+v([shoots]).
+#+end_src
+
+*** Problem
+- prolog ne koristi ulaznu recenicu kako bi pogodio, npr.
+  #+begin_src
+    [trace]  ?- s([a,man,shoots]).
+      Call: (10) s([a, man, shoots]) ?
+      Call: (11) np(_8748) ?
+      Call: (12) det(_9500) ?
+      Exit: (12) det([a]) ?
+      Call: (12) n(_11008) ?
+      Exit: (12) n([woman]) ?
+      Call: (12) append([a], [woman], _8748) ?
+      Call: (13) append([], [woman], _13278) ?
+      Exit: (13) append([], [woman], [woman]) ?
+      Exit: (12) append([a], [woman], [a, woman]) ?
+      Exit: (11) np([a, woman]) ?
+      Call: (11) vp(_16304) ?
+      Call: (12) v(_17056) ?
+      Exit: (12) v([shoots]) ?
+      Call: (12) np(_18564) ?
+      Call: (13) det(_19316) ?
+      Exit: (13) det([a]) ?
+      Call: (13) n(_20824) ?
+      Exit: (13) n([woman]) ?
+      Call: (13) append([a], [woman], _18564) ?
+      Call: (14) append([], [woman], _23094) ?
+      Exit: (14) append([], [woman], [woman]) ?
+      Exit: (13) append([a], [woman], [a, woman]) ?
+      Exit: (12) np([a, woman]) ?
+      Call: (12) append([shoots], [a, woman], _16304) ?
+      Call: (13) append([], [a, woman], _26882) ?
+      Exit: (13) append([], [a, woman], [a, woman]) ?
+      Exit: (12) append([shoots], [a, woman], [shoots, a, woman]) ?
+      Exit: (11) vp([shoots, a, woman]) ?
+      Call: (11) append([a, woman], [shoots, a, woman], [a, man, shoots]) ?
+  #+end_src
+
+- prvi guess koji je prolog radio je /a woman shoots a woman/
+
+*** Append na pocetku
+- bolje, ali radimo append na nepoznatim varijablama npr. ~append(_808, _831, Z).~
+
+#+begin_src prolog :tangle append_first.pl
+s(Z):- append(X,Y,Z),  np(X),  vp(Y).
+np(Z):- append(X,Y,Z),  det(X),  n(Y).
+vp(Z):- append(X,Y,Z),  v(X),  np(Y).
+vp(Z):- v(Z).
+
+det([the]).
+det([a]).
+n([woman]).
+n([man]).
+v([shoots]).
+#+end_src
+
+** Prepoznavanje BKG koristeci razliku lista
+*** Razlika lista
+- [a,woman,shoots,a,man,a,b,c,d] [a,b,c,d] == [a,woman,shoots,a,man]
+
+#+begin_src prolog :tangle ./difference_list.pl
+s(X,Z) :- np(X,Y),vp(Y,Z).
+np(X,Z) :- det(X,Y),n(Y,Z).
+vp(X,Z) :- v(X,Y),np(Y,Z).
+vp(X,Z) :- v(X,Z).
+
+det([the|W],W).
+det([a|W],W).
+
+n([man|W],W).
+n([woman|W],W).
+
+v([shoots|W],W).
+#+end_src
+
+- poanta je iz cijele recenice prepoznati pojedine gramaticke djelove
+
+#+begin_src
+[trace]  ?- s([a,man,shoots],[]).
+   Call: (10) s([a, man, shoots], []) ?
+   Call: (11) np([a, man, shoots], _7602) ?
+   Call: (12) det([a, man, shoots], _8358) ?
+   Exit: (12) det([a, man, shoots], [man, shoots]) ?
+   Call: (12) n([man, shoots], _7602) ?
+   Exit: (12) n([man, shoots], [shoots]) ?
+   Exit: (11) np([a, man, shoots], [shoots]) ?
+   Call: (11) vp([shoots], []) ?
+   Call: (12) v([shoots], _12884) ?
+   Exit: (12) v([shoots], []) ?
+   Call: (12) np([], []) ?
+   Call: (13) det([], _15148) ?
+   Fail: (13) det([], _15148) ?
+   Fail: (12) np([], []) ?
+   Redo: (11) vp([shoots], []) ?
+   Call: (12) v([shoots], []) ?
+   Exit: (12) v([shoots], []) ?
+   Exit: (11) vp([shoots], []) ?
+   Exit: (10) s([a, man, shoots], []) ?
+#+end_src
+
+- ovo je veliko poboljsanje
+
+* DCG
+
+* Primjer parsera
+#+begin_src prolog :tangle ./aritmetika_N.pl :session :goal izraz([otv,otv,2,2,3,+,3,zatv,*,4,zatv,^,5],[])
+izraz --> clan,plus,izraz.
+izraz --> clan.
+clan --> faktor,puta,clan.
+clan --> faktor.
+faktor --> baza,na,faktor.
+faktor --> baza.
+baza --> broj.
+baza --> o,izraz,z.
+
+plus --> [+].
+puta --> [*].
+na --> [^].
+o --> [otv].
+z --> [zatv].
+
+broj --> [0].
+broj --> [1],pbroj.
+broj --> [2],pbroj.
+broj --> [3],pbroj.
+broj --> [4],pbroj.
+broj --> [5],pbroj.
+broj --> [6],pbroj.
+broj --> [7],pbroj.
+broj --> [8],pbroj.
+broj --> [9],pbroj.
+
+pbroj --> [].
+pbroj --> broj.
+#+end_src
+
+#+RESULTS:
+: true.
