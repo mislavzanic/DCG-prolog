@@ -268,30 +268,30 @@ v([shoots|W],W).
 
 - nasa pocetna gramatika uz neka dodatna pravila
   #+begin_src prolog ./pronouns_exaple.pl
-    s    -->  np,vp.
-    np   -->  det,n.
-    vp   -->  v,np.
-    vp   -->  v.
+  s    -->  np,vp.
+  np   -->  det,n.
+  vp   -->  v,np.
+  vp   -->  v.
 
-    det  -->  [a].
-    det  -->  [the].
+  det  -->  [a].
+  det  -->  [the].
 
-    n    -->  [woman].
-    n    -->  [man].
+  n    -->  [woman].
+  n    -->  [man].
 
-    v    -->  [shoots].
+  v    -->  [shoots].
   #+end_src
 
 - sto sa recenicama oblika "He shoots her"
   - mozemo dodati nova pravila
 
   #+begin_src prolog ./pronouns_exaple.pl
-    pro  -->  [he].
-    pro  -->  [she].
-    pro  -->  [him].
-    pro  -->  [her].
+  pro  -->  [he].
+  pro  -->  [she].
+  pro  -->  [him].
+  pro  -->  [her].
 
-    np   -->  pro.
+  np   -->  pro.
   #+end_src
 
 - Ovo radi, ali nasa gramatika prepoznaje i recenice oblika "Her shoots she"
@@ -299,27 +299,27 @@ v([shoots|W],W).
 
 - ovo mozemo rjesiti tako da uvedemo dodatne varijable
   #+begin_src prolog ./extra_pronouns.pl
-    s  -->  np_subject,vp.
-    np_subject  -->  det,n.
-    np_object    -->  det,n.
-    np_subject  -->  pro_subject.
-    np_object    -->  pro_object.
+  s  -->  np_subject,vp.
+  np_subject  -->  det,n.
+  np_object    -->  det,n.
+  np_subject  -->  pro_subject.
+  np_object    -->  pro_object.
 
-    vp  -->  v,np_object.
-    vp  -->  v.
+  vp  -->  v,np_object.
+  vp  -->  v.
 
-    det  -->  [the].
-    det  -->  [a].
+  det  -->  [the].
+  det  -->  [a].
 
-    n  -->  [woman].
-    n  -->  [man].
+  n  -->  [woman].
+  n  -->  [man].
 
-    pro_subject  -->  [he].
-    pro_subject  -->  [she].
-    pro_object  -->  [him].
-    pro_object  -->  [her].
+  pro_subject  -->  [he].
+  pro_subject  -->  [she].
+  pro_object  -->  [him].
+  pro_object  -->  [her].
 
-    v  -->  [shoots].
+  v  -->  [shoots].
   #+end_src
 - ali to nije dobro rjesenje
   - tu smo napravili veliku promjenu u nasem DCG-u, tocnije poduplali smo pravila za ~np~
@@ -328,26 +328,26 @@ v([shoots|W],W).
 - dobro rjesenje dolazi u obliku dodatnih argumenata
 
   #+begin_src prolog
-    s --> np(subject),vp
+  s --> np(subject),vp
 
-    np(_) --> det,n.
-    np(X) --> pro(X).
+  np(_) --> det,n.
+  np(X) --> pro(X).
 
-    vp --> v,np(object).
-    vp --> v.
+  vp --> v,np(object).
+  vp --> v.
 
-    det --> [the].
-    det --> [a].
+  det --> [the].
+  det --> [a].
 
-    n --> [woman].
-    n --> [man].
+  n --> [woman].
+  n --> [man].
 
-    pro(subject) --> [he].
-    pro(subject) --> [she].
-    pro(object) --> [him].
-    pro(object) --> [her].
+  pro(subject) --> [he].
+  pro(subject) --> [she].
+  pro(object) --> [him].
+  pro(object) --> [her].
 
-    v --> [shoots].
+  v --> [shoots].
   #+end_src
 
 *** Stablo parsiranja
@@ -386,3 +386,35 @@ v([shoots|W],W).
 
   #+RESULTS:
   | X = [a | a | a | b | b | b | c | c | c]. |
+** Dodatna pravila
+- kako je DCG samo /syntactic sugar/, mozemo raditi sa njime stogod
+  - sto sa dodatnim pravilima?
+- npr. lijepo bi bilo imati aritmetiku u prethodnom primjeru
+  #+begin_src prolog
+  ablock(0) --> [].
+  ablock(Broj) --> [a],ablock(NoviBroj),Broj is NoviBroj + 1.
+  #+end_src
+- ovo nece raditi
+- dodatna pravila rjesavamo ovako
+  #+begin_src prolog
+  ablock(0) --> [].
+  ablock(Broj) --> [a],ablock(NoviBroj),{Broj is NoviBroj + 1}.
+  #+end_src
+- prolog, nakon sto procita znak '{', procita pravilo unuter i doda ga prevedenom ostatku
+
+*** Leksikografija
+#+begin_src prolog
+np  -->  det,n.
+vp  -->  v,np.
+vp  -->  v.
+
+det  -->  [Word],{lex(Word,det)}.
+n  -->  [Word],{lex(Word,n)}.
+v  -->  [Word],{lex(Word,v)}.
+
+lex(the,det).
+lex(a,det).
+lex(woman,n).
+lex(man,n).
+lex(shoots,v).
+#+end_src
