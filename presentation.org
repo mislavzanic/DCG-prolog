@@ -383,3 +383,6 @@ v([shoots|W],W).
     cblok(succ(Count)) --> [c],cblok(Count).
 
   #+end_src
+
+  #+RESULTS:
+  | X = [a | a | a | b | b | b | c | c | c]. |
