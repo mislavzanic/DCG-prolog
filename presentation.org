@@ -261,4 +261,70 @@ v([shoots|W],W).
 
 #+RESULTS:
 : true.
+
+* DCG++
 ** Dodatni argumenti
+- prava moc DCG-a
+
+- nasa pocetna gramatika uz neka dodatna pravila
+  #+begin_src prolog ./pronouns_exaple.pl
+    s    -->  np,vp.
+    np   -->  det,n.
+    vp   -->  v,np.
+    vp   -->  v.
+
+    det  -->  [a].
+    det  -->  [the].
+
+    n    -->  [woman].
+    n    -->  [man].
+
+    v    -->  [shoots].
+  #+end_src
+
+- sto sa recenicama oblika "He shoots her"
+  - mozemo dodati nova pravila
+
+  #+begin_src prolog ./pronouns_exaple.pl
+    pro  -->  [he].
+    pro  -->  [she].
+    pro  -->  [him].
+    pro  -->  [her].
+
+    np   -->  pro.
+  #+end_src
+
+- Ovo radi, ali nasa gramatika prepoznaje i recenice oblika "Her shoots she"
+  - nasa gramatika ne zna raspoznati sto je subjekt, a sto objekt
+
+- ovo mozemo rjesiti tako da uvedemo dodatne varijable
+  #+begin_src prolog ./extra_pronouns.pl
+    s  -->  np_subject,vp.
+    np_subject  -->  det,n.
+    np_object    -->  det,n.
+    np_subject  -->  pro_subject.
+    np_object    -->  pro_object.
+
+    vp  -->  v,np_object.
+    vp  -->  v.
+
+    det  -->  [the].
+    det  -->  [a].
+
+    n  -->  [woman].
+    n  -->  [man].
+
+    pro_subject  -->  [he].
+    pro_subject  -->  [she].
+    pro_object  -->  [him].
+    pro_object  -->  [her].
+
+    v  -->  [shoots].
+  #+end_src
+- ali to nije dobro rjesenje
+  - tu smo napravili veliku promjenu u nasem DCG-u, tocnije poduplali smo pravila za ~np~
+  - za iduce promjene trebali bi dodati jos vise novih pravila
+
+- dobro rjesenje dolazi u obliku dodatnih argumenata
+
+*** Stablo parsiranja
