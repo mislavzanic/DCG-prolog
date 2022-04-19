@@ -13,7 +13,7 @@ n    ->  woman
 n    ->  man
 v    ->  shoots
 #+end_src
-** BKG koristeci append
+** BKG koristeći append
 #+begin_src prolog :tangle ./cfg_append.pl
 append([],X,X).
 append([H|T1],Y,[H|T2]) :- append(T1,Y,T2).
@@ -31,48 +31,49 @@ v([shoots]).
 #+end_src
 
 *** Problem
-- prolog ne koristi ulaznu recenicu, npr.
-  #+begin_src
-  [trace]  ?- s([a,man,shoots]).
-    Call: (10) s([a, man, shoots]) ?
-    Call: (11) np(_8748) ?
-    Call: (12) det(_9500) ?
-    Exit: (12) det([a]) ?
-    Call: (12) n(_11008) ?
-    Exit: (12) n([woman]) ?
-    Call: (12) append([a], [woman], _8748) ?
-    Call: (13) append([], [woman], _13278) ?
-    Exit: (13) append([], [woman], [woman]) ?
-    Exit: (12) append([a], [woman], [a, woman]) ?
-    Exit: (11) np([a, woman]) ?
-    Call: (11) vp(_16304) ?
-    Call: (12) v(_17056) ?
-    Exit: (12) v([shoots]) ?
-    Call: (12) np(_18564) ?
-    Call: (13) det(_19316) ?
-    Exit: (13) det([a]) ?
-    Call: (13) n(_20824) ?
-    Exit: (13) n([woman]) ?
-    Call: (13) append([a], [woman], _18564) ?
-    Call: (14) append([], [woman], _23094) ?
-    Exit: (14) append([], [woman], [woman]) ?
-    Exit: (13) append([a], [woman], [a, woman]) ?
-    Exit: (12) np([a, woman]) ?
-    Call: (12) append([shoots], [a, woman], _16304) ?
-    Call: (13) append([], [a, woman], _26882) ?
-    Exit: (13) append([], [a, woman], [a, woman]) ?
-    Exit: (12) append([shoots], [a, woman], [shoots, a, woman]) ?
-    Exit: (11) vp([shoots, a, woman]) ?
-    Call: (11) append([a, woman], [shoots, a, woman], [a, man, shoots]) ?
-  #+end_src
+ - prolog ne koristi ulaznu rečenicu, npr.
 
-  - prvi guess koji je prolog radio je /a woman shoots a woman/
-  - ovo je samo DIO trace-a, jako mali dio...
-  - ocito nas ovaj nacin nece dovesti daleko, dovoljno je dobro za jako male gramatike, ali, kod iole vecih, imat cemo problema
+#+begin_src
+[trace]  ?- s([a,man,shoots]).
+Call: (10) s([a, man, shoots]) ?
+Call: (11) np(_8748) ?
+Call: (12) det(_9500) ?
+Exit: (12) det([a]) ?
+Call: (12) n(_11008) ?
+Exit: (12) n([woman]) ?
+Call: (12) append([a], [woman], _8748) ?
+Call: (13) append([], [woman], _13278) ?
+Exit: (13) append([], [woman], [woman]) ?
+Exit: (12) append([a], [woman], [a, woman]) ?
+Exit: (11) np([a, woman]) ?
+Call: (11) vp(_16304) ?
+Call: (12) v(_17056) ?
+Exit: (12) v([shoots]) ?
+Call: (12) np(_18564) ?
+Call: (13) det(_19316) ?
+Exit: (13) det([a]) ?
+Call: (13) n(_20824) ?
+Exit: (13) n([woman]) ?
+Call: (13) append([a], [woman], _18564) ?
+Call: (14) append([], [woman], _23094) ?
+Exit: (14) append([], [woman], [woman]) ?
+Exit: (13) append([a], [woman], [a, woman]) ?
+Exit: (12) np([a, woman]) ?
+Call: (12) append([shoots], [a, woman], _16304) ?
+Call: (13) append([], [a, woman], _26882) ?
+Exit: (13) append([], [a, woman], [a, woman]) ?
+Exit: (12) append([shoots], [a, woman], [shoots, a, woman]) ?
+Exit: (11) vp([shoots, a, woman]) ?
+Call: (11) append([a, woman], [shoots, a, woman], [a, man, shoots]) ?
+#+end_src
 
-*** Append na pocetku
-- bolje, ali radimo append na nepoznatim varijablama npr. ~append(_808, _831, Z).~
-  - ako se sjetimo predavanja, od tuda dolazi neefikasnost ~append~ funkcije
+ - prvi guess prolog radi je /a woman shoots a woman/
+ - ovo je samo DIO trace-a, jako mali dio... (možete probati sami)
+ - očito nas ovaj način neće dovesti daleko, dovoljno je dobro za jako male gramatike, ali, kod iole većih, imat ćemo problema
+
+*** Append na početku
+ - bolje, ali radimo append na nepoznatim varijablama npr. ~append(_808, _831, Z).~
+   - ~append~ će samo pogađati...
 
 #+begin_src prolog :tangle append_first.pl
 s(Z):- append(X,Y,Z),  np(X),  vp(Y).
@@ -87,8 +88,8 @@ n([man]).
 v([shoots]).
 #+end_src
 
-** Prepoznavanje BKG koristeci razliku lista
-- [a,woman,shoots,a,man,a,b,c,d] [a,b,c,d] == [a,woman,shoots,a,man]
+** Prepoznavanje BKG koristeći razliku lista
+ - [a,woman,shoots,a,man,a,b,c,d] [a,b,c,d] == [a,woman,shoots,a,man]
 
 #+begin_src prolog :tangle ./difference_list.pl
 s(X,Z) :- np(X,Y),vp(Y,Z).
@@ -105,11 +106,11 @@ n([woman|W],W).
 v([shoots|W],W).
 #+end_src
 
-- poanta je iz cijele recenice prepoznati pojedine gramaticke djelove
-- ne koristi se append
+ - poanta je iz cijele rečenice prepoznati pojedine gramatičke djelove
+ - ne koristi se append
 
-*** Poboljsanje?
-- *veliko*
+*** Poboljšanje?
+ - *veliko*
 #+begin_src
 [trace]  ?- s([a,man,shoots],[]).
    Call: (10) s([a, man, shoots], []) ?
@@ -133,67 +134,70 @@ v([shoots|W],W).
    Exit: (10) s([a, man, shoots], []) ?
 #+end_src
 
-- ovo je cijeli trace, ne samo dio
+ - ovo je cijeli trace, ne samo dio
 
-- tu mozemo primjetiti da se nasa originalna (~[a,man,shoots]~) recenica propagira do ~det~ dijela gramatike, gdje se odmah prepoznaje ~[a]~
+ - tu možemo primjetiti da se naša originalna (~[a,man,shoots]~) rečenica propagira do ~det~ dijela gramatike, gdje se odmah prepoznaje ~[a]~
 
-- mane ovog pristupa su
-  - sam po sebi nije toliko "intuitivan"
-  - nespretan je za napisat (tko ce pamtit da je ~([a|W],[W]) == [a]~)
+ - mane ovog pristupa su:
+   - sam po sebi nije toliko "intuitivan"
+   - nespretan je za napisat (tko će pamtit da je ~([a|W],[W]) == [a]~)
 
 * DCG
-- lijepa notacija za pisanje gramatika
-  #+begin_src prolog :tangle ./dcg_example.pl :session :goal listing(s)
-  s    -->  np,vp.
-  np   -->  det,n.
-  vp   -->  v,np.
-  vp   -->  v.
+  - lijepa notacija za pisanje gramatika
 
-  det  -->  [a].
-  det  -->  [the].
-  n    -->  [woman].
-  n    -->  [man].
-  v    -->  [shoots].
-  #+end_src
+    #+begin_src prolog :tangle ./dcg_example.pl :session :goal listing(s)
+    s    -->  np,vp.
+    np   -->  det,n.
+    vp   -->  v,np.
+    vp   -->  v.
 
-- u pozadini je to razlika listi, DCG je samo tzv. /syntactic sugar/ pomocu kojeg mozemo pisati gramatike na prirodan nacin
-  - poziv: ~s(X,[]).~
+    det  -->  [a].
+    det  -->  [the].
+    n    -->  [woman].
+    n    -->  [man].
+    v    -->  [shoots].
+    #+end_src
 
-- efikasnost razlike lista i lijepa notacija (slicna BKG-u)
+  - u pozadini je to razlika listi, DCG je samo tzv. /syntactic sugar/ pomoću kojeg možemo pisati gramatike na prirodan način
+    - poziv: ~s(X,[]).~
+
+  - efikasnost razlike lista i lijepa notacija (slična BKG-u)
 
 ** Rekurzivna pravila
-#+begin_src prolog :tangle ./dcg_example.pl
-s    --> s,conj,s.
-conj --> [and].
-conj --> [or].
-conj --> [but].
-#+end_src
+   #+begin_src prolog :tangle ./dcg_example.pl
+   s    --> s,conj,s.
+   conj --> [and].
+   conj --> [or].
+   conj --> [but].
+   #+end_src
 
-- ako ova pravila (specificno, pravilo za ~s~) stavimo na pocetak i pokrenemo query ~s([a,woman,shoots],[]).~, prolog ce se zaloopati
-  - prolog ce iskljucivo pokusavati zadovoljiti prvo pravilo
+ - ako ova pravila (specifično, pravilo za ~s~) stavimo na početak i pokrenemo query ~s([a,woman,shoots],[]).~, prolog će se zaloopati
+   - prolog će isključivo pokušavati zadovoljiti prvo pravilo
 
-- sada dobijemo odgovor na query ~s([a,woman,shoots],[]).~, ali ako pitamo prolog ~s([woman,shoots], []).~, prolog se ponovo zaloopa
-  - tu se ne mozemo izvuci sa mijenjanjem redosljeda (~s --> s,conj,s.~ i ~s --> conj,s,s.~ nemaju istu semantiku)
+ - ako ~s --> s,conj,s~ prebacimo na početak, dobijemo odgovor na query ~s([a,woman,shoots],[]).~, ali ako pitamo prolog ~s([woman,shoots], []).~, prolog se ponovo zaloopa
+   - tu se ne mozemo izvući sa mijenjanjem redosljeda (~s --> s,conj,s.~ i ~s --> conj,s,s.~ nemaju istu semantiku)
 
-- rjesenje je ono standardno, dodaj novu varijablu
+ - rješenje je ono standardno, dodaj novu varijablu
 
-  #+begin_src prolog :tangle ./better_dcg_example.pl
-  s      --> novi_s.
-  s      --> novi_s,conj,s.
-  novi_s --> np,vp.
-  np     --> det,n.
-  vp     --> v,np.
-  vp     --> v.
+   #+begin_src prolog :tangle ./better_dcg_example.pl
+   s      --> novi_s.
+   s      --> novi_s,conj,s.
+   novi_s --> np,vp.
+   np     --> det,n.
+   vp     --> v,np.
+   vp     --> v.
 
-  det    --> [a].
-  det    --> [the].
-  n      --> [woman].
-  n      --> [man].
-  v      --> [shoots].
-  conj   --> [and].
-  conj   --> [or].
-  conj   --> [but].
-  #+end_src
+   det    --> [a].
+   det    --> [the].
+   n      --> [woman].
+   n      --> [man].
+   v      --> [shoots].
+   conj   --> [and].
+   conj   --> [or].
+   conj   --> [but].
+   #+end_src
+
+   #+RESULTS:
 
 ** Primjeri DCG-a
 *** Propozicionalna logika
@@ -261,10 +265,10 @@ pbroj --> broj.
 
 * DCG++
 ** Dodatni argumenti
-- prava moc DCG-a
+- prava moć DCG-a
 
 *** Primjer
-**** Nasa pocetna gramatika
+**** Naša početna gramatika
   #+begin_src prolog ./pronouns_exaple.pl
   s    -->  np,vp.
   np   -->  det,n.
@@ -292,11 +296,11 @@ pbroj --> broj.
   np   -->  pro.
   #+end_src
 
-  - Ovo radi, ali nasa gramatika prepoznaje i recenice oblika "Her shoots she"
-    - nasa gramatika ne zna raspoznati sto je subjekt, a sto objekt
+  - Ovo radi, ali naša gramatika prepoznaje i rečenice oblika "Her shoots she"
+    - naša gramatika ne zna raspoznati što je subjekt, a što objekt
 
-**** Jedno od rjesenja
-  - ovo mozemo rjesiti tako da uvedemo dodatne varijable
+**** Jedno od rješenja
+  - ovo možemo rješiti tako da uvedemo dodatne varijable
     #+begin_src prolog ./extra_pronouns.pl
     s  -->  np_subject,vp.
     np_subject  -->  det,n.
@@ -321,40 +325,40 @@ pbroj --> broj.
     v  -->  [shoots].
     #+end_src
 
-  - to nije dobro rjesenje
-    - tu smo napravili veliku promjenu u nasem DCG-u, tocnije poduplali smo pravila za ~np~
-    - za iduce promjene trebali bi dodati jos vise novih pravila
+  - to nije dobro rješenje
+    - tu smo napravili veliku promjenu u našem DCG-u, točnije poduplali smo pravila za ~np~
+    - za iduće promjene trebali bi dodati još vise novih pravila
 
-**** Dobro rjesenje
-- dodatni argumenti
+**** Dobro rješenje
+ - dodatni argumenti
 
-  #+begin_src prolog
-  s --> np(subject),vp
+   #+begin_src prolog
+   s --> np(subject),vp
 
-  np(_) --> det,n.
-  np(X) --> pro(X).
+   np(_) --> det,n.
+   np(X) --> pro(X).
 
-  vp --> v,np(object).
-  vp --> v.
+   vp --> v,np(object).
+   vp --> v.
 
-  det --> [the].
-  det --> [a].
+   det --> [the].
+   det --> [a].
 
-  n --> [woman].
-  n --> [man].
+   n --> [woman].
+   n --> [man].
 
-  pro(subject) --> [he].
-  pro(subject) --> [she].
-  pro(object) --> [him].
-  pro(object) --> [her].
+   pro(subject) --> [he].
+   pro(subject) --> [she].
+   pro(object) --> [him].
+   pro(object) --> [her].
 
-  v --> [shoots].
-  #+end_src
+   v --> [shoots].
+   #+end_src
 
-- ovo je ok, DCG je ionako samo razlika listi u pozadini, nista nas ne sprijecava da dodamo jos jednu varijablu
+ - ovo je ok, DCG je ionako samo razlika listi u pozadini, ništa nas ne spriječava da dodamo jšs jednu varijablu
 
 *** Stablo parsiranja
-- dodatni argumenti nam mogu pomoci pri izgradnji stabla parsiranja
+- dodatni argumenti nam mogu pomoći pri izgradnji stabla parsiranja
 
   #+begin_src prolog ./simple_parser.pl :session :goal s(X,[a,woman,shoots,a,man],[])
   s(s(NP,VP)) --> np(NP),vp(VP).
@@ -373,7 +377,7 @@ pbroj --> broj.
 
 *** BKG++
 
-- dodatne varijable nam mogu pomoci u prepoznavanju jezika koji nisu u BK
+- dodatne varijable nam mogu pomoći u prepoznavanju jezika koji nisu u BK
 - npr. jezik  \( {a^n b^n c^n, n \in N_+ } \)
   #+begin_src prolog :tangle ./bkg_pp.pl :session :goal s(succ(succ(succ(0))), X, [])
     s(Count) --> ablok(Count),bblok(Count),cblok(Count).
@@ -392,8 +396,8 @@ pbroj --> broj.
   #+RESULTS:
   | X = [a | a | a | b | b | b | c | c | c]. |
 ** Dodatna pravila
-- kako je DCG samo /syntactic sugar/, mozemo raditi sa njime stogod
-  - sto sa dodatnim pravilima?
+- kako je DCG samo /syntactic sugar/, možemo raditi sa njime štogod
+  - što sa dodatnim pravilima?
 - npr. lijepo bi bilo imati aritmetiku u prethodnom primjeru
 
   #+begin_src prolog
@@ -401,17 +405,19 @@ pbroj --> broj.
   ablock(Broj) --> [a],ablock(NoviBroj),Broj is NoviBroj + 1.
   #+end_src
 
-- ovo nece raditi
-- dodatna pravila rjesavamo ovako
+- ovo neće raditi
+- dodatna pravila rješavamo ovako
 
   #+begin_src prolog
   ablock(0) --> [].
   ablock(Broj) --> [a],ablock(NoviBroj),{Broj is NoviBroj + 1}.
   #+end_src
 
-- prolog, nakon sto procita znak '{', procita pravilo unuter i doda ga prevedenom ostatku
+- prolog, nakon sto pročita znak '{', pročita pravilo unutar i doda ga prevedenom ostatku
 
 *** Leksikografija
+ - primjena dodatnih pravila
+
 #+begin_src prolog
 np  -->  det,n.
 vp  -->  v,np.
