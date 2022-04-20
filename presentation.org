@@ -392,9 +392,6 @@ pbroj --> broj.
     cblok(succ(Count)) --> [c],cblok(Count).
 
   #+end_src
-
-  #+RESULTS:
-  | X = [a | a | a | b | b | b | c | c | c]. |
 ** Dodatna pravila
 - kako je DCG samo /syntactic sugar/, možemo raditi sa njime štogod
   - što sa dodatnim pravilima?
