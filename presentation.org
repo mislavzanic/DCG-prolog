@@ -430,3 +430,56 @@ lex(woman,n).
 lex(man,n).
 lex(shoots,v).
 #+end_src
+
+** (Aritmetika u N)++
+
+#+begin_src prolog :tangle aritm_Npp.pl
+izraz(izraz(Clan,Plus,Izraz))  --> clan(Clan),plus(Plus),izraz(Izraz).
+izraz(izraz(Clan))             --> clan(Clan).
+clan(clan(Faktor,Puta,Clan))   --> faktor(Faktor),puta(Puta),clan(Clan).
+clan(clan(Faktor))             --> faktor(Faktor).
+faktor(faktor(Baza,Na,Faktor)) --> baza(Baza),na(Na),faktor(Faktor).
+faktor(faktor(Baza))           --> baza(Baza).
+baza(baza(Broj))               --> broj(Broj).
+baza(baza(Otv,Izraz,Zatv))     --> otv(Otv),izraz(Izraz),zatv(Zatv).
+
+plus(plus(Op))   --> [Op],{lex(Op,operator)}.
+puta(puts(Op))   --> [Op],{lex(Op,operator)}.
+na(na(Op))       --> [Op],{lex(Op,operator)}.
+
+otv(otv('('))   --> [Pom],{lex(Pom,pom_znak)}.
+zatv(zatv(')')) --> [Pom],{lex(Pom,pom_znak)}.
+
+broj(broj(N)) --> znamenka(D), broj(D,N).
+broj(N,N)     --> [].
+broj(A,N)     --> znamenka(D),{A1 is A * 10 + D},broj(A1,N).
+
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+znamenka(N) --> [N],{lex(N,znamenka)}.
+
+lex(+,operator).
+lex(*,operator).
+lex(^,operator).
+
+lex('(',pom_znak).
+lex(')',pom_znak).
+
+lex(0,znamenka).
+lex(1,znamenka).
+lex(2,znamenka).
+lex(3,znamenka).
+lex(4,znamenka).
+lex(5,znamenka).
+lex(6,znamenka).
+lex(7,znamenka).
+lex(8,znamenka).
+lex(9,znamenka).
+#+end_src
